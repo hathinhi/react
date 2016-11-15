@@ -7,12 +7,11 @@ var Cart = React.createClass({
     /**
      * @return {object}
      */
-    render: function () {
+    render        : function () {
         return (
             <div className="flux-cart">
                 <div className="mini-cart" id="mini_cart">
-                    <button type="button" className="close-cart"
-                            onclick="document.getElementById('mini_cart').style.right='-500px'">x
+                    <button type="button" className="close-cart" onClick={this._onRemoveClick}>x
                     </button>
                     <ul>
                         <li>
@@ -25,7 +24,8 @@ var Cart = React.createClass({
                             <p className="price">
                                 <span>$</span>
                                 <span>4.99</span></p>
-                            <button type="button" className="remove-item">Remove</button>
+                            <button type="button" className="remove-item" onClick={this._onRemoveClick}>Remove
+                            </button>
                         </li>
                     </ul>
                     <span className="total">
@@ -33,15 +33,16 @@ var Cart = React.createClass({
                         <span>4.99</span>
                     </span>
                 </div>
-                <button type="button" className="view-cart"
-                        onclick="document.getElementById('mini_cart').style.right='0'">
+                <button type="button" className="view-cart" onClick={this._onAddClick}>
                     <span>View Cart (</span>
                     <span>1</span>
                     <span>)</span></button>
             </div>
-
         );
     },
+    _onRemoveClick: function () {
+
+    }
 });
 
 module.exports = Cart;

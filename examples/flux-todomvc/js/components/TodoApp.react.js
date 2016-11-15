@@ -11,10 +11,11 @@
  * This component operates as a "Controller-View".  It listens for changes in
  * the TodoStore and passes the new data to its children.
  */
-
+var AppActions = require('../actions/AppActions');
 var Footer = require('./Footer.react');
 var Header = require('./Header.react');
 var MainSection = require('./MainSection.react');
+var ProductStore = require('../stores/ProductStore');
 var Product = require('./Product.react');
 var Cart = require('./Cart.react');
 var React = require('react');
@@ -23,51 +24,48 @@ var TodoStore = require('../stores/TodoStore');
 /**
  * Retrieve the current TODO data from the TodoStore
  */
-function getTodoState() {
-  return {
-    allTodos: TodoStore.getAll(),
-    areAllComplete: TodoStore.areAllComplete()
-  };
+function getStateFromStores() {
+    return {
+        product: ProductStore.get(),
+        cart   : ProductStore.getCart()
+    };
 }
 
 var TodoApp = React.createClass({
 
-  getInitialState: function () {
-    return getTodoState();
-  },
+    getInitialState: function () {
+        return getStateFromStores();
+    },
 
-  componentDidMount: function () {
-    TodoStore.addChangeListener(this._onChange);
-  },
+    componentDidMount: function () {
+        ProductStore.addChangeListener(this._onChange);
+        AppActions.getProduct(0);
+    },
 
-  componentWillUnmount: function () {
-    TodoStore.removeChangeListener(this._onChange);
-  },
+    componentWillUnmount: function () {
+        ProductStore.removeChangeListener(this._onChange);
+    },
 
-  /**
-   * @return {object}
-   */
-  render: function () {
-    return (
-        <div>
-          {/*<Header />*/}
-          <Product allTodos={this.state.allTodos} />
-          {/*<MainSection*/}
-          {/*allTodos={this.state.allTodos}*/}
-          {/*areAllComplete={this.state.areAllComplete}*/}
-          {/*/>*/}
-          <Footer allTodos={this.state.allTodos}/>
-        </div>
-    );
-  },
 
-  /**
-   * Event handler for 'change' events coming from the TodoStore
-   */
-  _onChange: function () {
-    this.setState(getTodoState());
-  }
+    /**
+     * Event handler for 'change' events coming from the TodoStore
+     */
+    _onChange: function () {
+        this.setState(getStateFromStores());
+    },
 
+
+    /**
+     * @return {object}
+     */
+    render: function () {
+        return (
+            <div className="flux-cart-container">
+                <Cart cart={this.state.cart}/>
+                <Product data={this.state.product}/>
+            </div>
+        );
+    },
 });
 
 module.exports = TodoApp;

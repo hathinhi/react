@@ -1,43 +1,32 @@
 var React = require('react');
 var Product = React.createClass({
-
+    defaultProps: {
+        data: {
+            id     : 0,
+            name   : "",
+            desc   : "",
+            img    : "img/no_image.jpg",
+            price  : 10,
+            options: null
+        }
+    },
+    propTypes   : {
+        data: React.PropTypes.object.isRequired
+    },
     /**
      * @return {object}
      */
 
-    render        : function () {
-
+    render      : function () {
+        var options = this.props.data.options;
+        console.log("ccc",options);
+        var arr_option = [];
+        for (var i in options) {
+            arr_option.push(<option value={i} key={i}>{options[i]}</option>);
+        }
+        console.log("arr",arr_option);
         return (
             <div>
-                <div className="flux-cart">
-                    <div className="mini-cart" id="mini_cart">
-                        <button type="button" className="close-cart" onClick={this._onRemoveClick}>x
-                        </button>
-                        <ul>
-                            <li>
-                                <h1 className="name">Scotch.io Signature Lager</h1>
-                                <p>
-                                    <span>40oz Bottle</span>
-                                    <span> x </span>
-                                    <span>1</span>
-                                </p>
-                                <p className="price">
-                                    <span>$</span>
-                                    <span>4.99</span></p>
-                                <button type="button" className="remove-item" onClick={this._onRemoveClick}>Remove
-                                </button>
-                            </li>
-                        </ul>
-                        <span className="total">
-                        <span>Total: $</span>
-                        <span>4.99</span>
-                    </span>
-                    </div>
-                    <button type="button" className="view-cart" onClick={this._onAddClick}>
-                        <span>View Cart (</span>
-                        <span>1</span>
-                        <span>)</span></button>
-                </div>
                 <div className="flux-product">
                     <img src="img/scotch-beer.png"/>
                     <div className="flux-product-detail">
@@ -49,11 +38,9 @@ var Product = React.createClass({
                             If you pass out while drinking this beverage, Chris Sevilleja personally tucks you in.</p>
                         <p className="price">
                             <span>Price: $</span>
-                            <span>4.99</span></p>
+                            <span>{this.props.data.price}</span></p>
                         <select>
-                            <option value="0">40oz Bottle</option>
-                            <option value="1">6 Pack</option>
-                            <option value="2">30 Pack</option>
+                            {arr_option}
                         </select>
                         <button type="button" onClick={this._onAddClick}>Add To Cart
                         </button>
@@ -63,12 +50,9 @@ var Product = React.createClass({
             </div>
         );
     },
-    _onAddClick   : function () {
+    _onAddClick : function () {
         document.getElementById('mini_cart').style.right = '0';
     },
-    _onRemoveClick: function () {
-        document.getElementById('mini_cart').style.right = '-500px';
-    }
 
 });
 
