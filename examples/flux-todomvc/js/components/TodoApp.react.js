@@ -15,6 +15,8 @@
 var Footer = require('./Footer.react');
 var Header = require('./Header.react');
 var MainSection = require('./MainSection.react');
+var Product = require('./Product.react');
+var Cart = require('./Cart.react');
 var React = require('react');
 var TodoStore = require('../stores/TodoStore');
 
@@ -30,38 +32,39 @@ function getTodoState() {
 
 var TodoApp = React.createClass({
 
-  getInitialState: function() {
+  getInitialState: function () {
     return getTodoState();
   },
 
-  componentDidMount: function() {
+  componentDidMount: function () {
     TodoStore.addChangeListener(this._onChange);
   },
 
-  componentWillUnmount: function() {
+  componentWillUnmount: function () {
     TodoStore.removeChangeListener(this._onChange);
   },
 
   /**
    * @return {object}
    */
-  render: function() {
+  render: function () {
     return (
-      <div>
-        <Header />
-        <MainSection
-          allTodos={this.state.allTodos}
-          areAllComplete={this.state.areAllComplete}
-        />
-        <Footer allTodos={this.state.allTodos} />
-      </div>
+        <div>
+          {/*<Header />*/}
+          <Product allTodos={this.state.allTodos} />
+          {/*<MainSection*/}
+          {/*allTodos={this.state.allTodos}*/}
+          {/*areAllComplete={this.state.areAllComplete}*/}
+          {/*/>*/}
+          <Footer allTodos={this.state.allTodos}/>
+        </div>
     );
   },
 
   /**
    * Event handler for 'change' events coming from the TodoStore
    */
-  _onChange: function() {
+  _onChange: function () {
     this.setState(getTodoState());
   }
 
